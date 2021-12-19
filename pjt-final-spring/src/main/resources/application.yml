@@ -8,7 +8,8 @@ spring:
 
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/Movie-Curators
+    url: jdbc:postgresql://moviecurators-db.cydmyehvhwxy.us-east-2.rds.amazonaws.com:5432/Movie-Curators
+
     username: postgres
     password: admin1234
     driverClassName: org.postgresql.Driver
