@@ -1,5 +1,7 @@
 package ssafy.moviecurators.service;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,18 +14,22 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ssafy.moviecurators.domain.payments.KakaoPayApprovalVO;
 import ssafy.moviecurators.domain.payments.KakaoPayReadyVO;
+import ssafy.moviecurators.repository.UserRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class KakaoPayService {
+
+    private final UserService userService;
 
     private static final String HOST = "https://kapi.kakao.com";
     // 카카오페이 내 어플리케이션 플랫폼에서 주소 관리
-//    private static final String FRONTSERVER = "https://moviecurators-spring.netlify.app";
-    private static final String FRONTSERVER = "http://localhost:8081";
+    private static final String FRONTSERVER = "https://moviecurators-spring.netlify.app";
+//    private static final String FRONTSERVER = "http://localhost:8081";
 
     @Value("${key.kakao.admin}")
     String ADMIN_KEY;
@@ -81,7 +87,7 @@ public class KakaoPayService {
         return "에러 발생";
     }
 
-    public KakaoPayApprovalVO kakaoPaySuccess(String pg_token) {
+    public KakaoPayApprovalVO kakaoPaySuccess(String pg_token, Long userId) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -108,6 +114,10 @@ public class KakaoPayService {
         try {
             kakaoPayApprovalVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/approve"), body, KakaoPayApprovalVO.class);
 //            log.info("카카오 성공" + kakaoPayApprovalVO);
+            if (userId != -1L) {
+                userService.rankUpPremium(userId);
+            }
+            System.out.println("kakaoPayApprovalVO = " + kakaoPayApprovalVO);
 
             return kakaoPayApprovalVO;
 

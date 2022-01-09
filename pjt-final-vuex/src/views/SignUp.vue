@@ -42,19 +42,22 @@ export default {
           swal.fire ({
             icon: 'error',
             title: '가입 실패',
-            text: '유저 이름을 입력해주세요.'
+            text: '유저 이름을 입력해주세요.',
+            scrollbarPadding: false
         })
         } else if (!this.credentials.password) {
           swal.fire ({
             icon: 'error',
             title: '가입 실패',
-            text: '비밀번호를 입력해주세요.'
+            text: '비밀번호를 입력해주세요.',
+            scrollbarPadding: false
         })
         } else if (this.credentials.password != this.credentials.passwordConfirmation) {
           swal.fire ({
             icon: 'error',
             title: '가입 실패',
-            text: '비밀번호가 일치하지 않습니다.'
+            text: '비밀번호가 일치하지 않습니다.',
+            scrollbarPadding: false
         })
         } else {
         const contents = {
@@ -71,17 +74,22 @@ export default {
         })
         .then(
           () => {
+            swal.fire ({
+              icon: 'success',
+              title: '회원 가입 성공',
+              text: 'Movie Curators에 오신 것을 환영합니다!',
+              scrollbarPadding: false
+            })
             this.$store.dispatch('login', this.credentials)
             this.$store.dispatch('getUserInfo', this.credentials.username)
           }              
         )
         .catch(err =>{
-          console.log(err.response)
           swal.fire ({
               icon: 'error',
               title: '가입 실패',
-              text: err.response.data.error
-              // text: '가입 실패'
+              text: err.response.data.error,
+              scrollbarPadding: false
               })      
           })
         }

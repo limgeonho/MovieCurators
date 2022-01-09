@@ -15,7 +15,7 @@
         <div class="article-form-input-detail">
           <div v-if="isLogin">
             <!-- 프로필 -->
-            <div class="article-form-profile col-md-4">
+            <div class="article-form-profile d-none col-sm-2 d-md-block col-md-2">
               <div v-if="image === null">
                 <img src="@/assets/images/profile_basic.jpg" class="img-fluid rounded" alt="profileImage">
               </div>
@@ -26,7 +26,7 @@
 
             <!-- 글 입력 폼 -->
             <div v-if="!isArticleWriten" class="article-form-input-box">
-              <v-row @keyup.enter="createArticle">
+              <v-row>
                 <v-col offset="1" class="col-10">
 
                   <div class="article-form-star-box">
@@ -57,6 +57,7 @@
                     label="글 내용을 입력하세요"
                     v-model="articleContent"
                     color="white"
+                    auto-grow
                   ></v-textarea>
 
                   <!-- 버튼 -->
@@ -109,9 +110,8 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="row">
-                        
                         <!-- 사진과 작성 시간-->
-                        <div class="col-md-2">
+                        <div class="d-none col-sm-2 d-md-block col-md-2">
                           <div v-if="article.user.image === null">
                             <img src="@/assets/images/profile_basic.jpg" class="review-form-profile img-fluid rounded" alt="profileImage">
                             <div class="review-form-time">
@@ -125,8 +125,7 @@
                             </div>
                           </div>
                         </div>
-                        
-                        <div class="col-md-10">
+                        <div class="col-md-10 col-sm-10">
                           <p class="text-primary"></p>
                             <!-- 작성자 이름 -->
                             <router-link :to="{ name: 'CuratorDetail', params: { id: article.user.id }}">
@@ -168,7 +167,7 @@
                           <div class="clearfix"></div>
                           
                           <!-- 내용 -->
-                          <p class="text-secondary">{{article.content}}</p>
+                          <pre class="text-secondary">{{article.content}}</pre>
                           
                           <!-- 평가 상세 버튼 -->
                           <router-link :to="{ name: 'ArticleDetail', params: { id: article.id }}">
@@ -248,8 +247,6 @@ export default {
         headers: this.setToken(),
       })
       .then((res)=>{
-        console.log('articleList')
-        console.log(res.data)
         this.articles = res.data
       })
     },
@@ -259,19 +256,22 @@ export default {
           swal.fire ({
             icon: 'error',
             title: '평가 작성 실패',
-            text: '별점을 입력해주세요.'
+            text: '별점을 입력해주세요.',
+            scrollbarPadding: false
         })
         } else if (this.articleTitle === '') {
           swal.fire ({
             icon: 'error',
             title: '평가 작성 실패',
-            text: '제목을 입력해주세요.'
+            text: '제목을 입력해주세요.',
+            scrollbarPadding: false
         })
         } else if (this.articleContent === '') {
           swal.fire ({
             icon: 'error',
             title: '평가 작성 실패',
-            text: '내용을 입력해주세요.'
+            text: '내용을 입력해주세요.',
+            scrollbarPadding: false
         })
         } else {
         const contents = {
@@ -287,8 +287,6 @@ export default {
           data: contents,
         })
         .then(res => {
-          console.log('articleFormWrite')
-          console.log(res.data)
           this.isArticleWriten = true
           this.articleId = res.data.id
           this.articles.unshift(res.data)
@@ -311,8 +309,6 @@ export default {
       headers: this.setToken(),
     })
     .then(res => {
-      console.log('articleDetail')
-      console.log(res.data)
       // 내용이 비어있음 = 평가 적은 적이 없음
       if (Object.keys(res.data.content).length) {
         this.isArticleWriten = true

@@ -10,8 +10,6 @@ import SERVER from '@/api/server'
 import googleApi from '@/api/google'
 
 
-//const SERVER_URL = 'http://127.0.0.1:8000/'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -28,6 +26,7 @@ export default new Vuex.Store({
     username: null,
     nickname: null,
     mileage: null,
+    userExp: 0,
     image: null,
     introduction: null,
     // 작성 평가, 댓글 작성수 관련 (이벤트 등에 활용 가능)
@@ -72,6 +71,7 @@ export default new Vuex.Store({
       state.nickname = null
       state.introduction = null
       state.mileage = null
+      state.userExp = 0
       state.image = null
       state.token = null
       state.followers = null
@@ -90,6 +90,7 @@ export default new Vuex.Store({
       state.userId = res.id
       state.nickname = res.nickname
       state.mileage = res.mileage
+      state.userExp = res.exp
       state.introduction = res.introduction
       state.following = res.following
       state.followers = res.followers
@@ -132,7 +133,6 @@ export default new Vuex.Store({
         data: credentials,
       })
       .then(res => {
-        console.log(res.data)
         localStorage.setItem('jwt', res.data.token)
         commit('LOGIN', credentials)
         router.push({name: 'Home'})
@@ -141,7 +141,8 @@ export default new Vuex.Store({
         swal.fire ({
           icon: 'error',
           title: '로그인 실패',
-          text: '잘못된 아이디 또는 패스워드입니다.'
+          text: '잘못된 아이디 또는 패스워드입니다.',
+          scrollbarPadding: false
           })    
       })
     },
@@ -164,8 +165,6 @@ export default new Vuex.Store({
         url: SERVER.URL + SERVER.ROUTES.accounts.default + String(username) + SERVER.ROUTES.accounts.getUserInfo,
       })
       .then(res => {
-        console.log('getUserInfo')
-        console.log(res.data)
         commit('GET_USER_INFO', res.data)
       })
       .catch(err => console.log(err))
@@ -200,8 +199,6 @@ export default new Vuex.Store({
         headers: getters.token,
       })
       .then((res) => {
-        console.log('UpdateProfile')
-        console.log(res.data)
         // 대상 포함 여부
         const nickname = res.data.nickname
         const introduction = res.data.introduction
@@ -213,7 +210,6 @@ export default new Vuex.Store({
         } else {
           image = state.image
         }
-        console.log(image)
         commit("GET_MY_PROFILE", { nickname, introduction, image })        
       })
       .catch((err) => {console.log(err.response.data.error)})
@@ -239,7 +235,8 @@ export default new Vuex.Store({
         swal.fire ({
           icon: 'success',
           title: '마일리지 충전 성공',
-          text: changeMileage + ' 마일리지가 충전 되었습니다.'
+          text: changeMileage + ' 마일리지가 충전 되었습니다.',
+          scrollbarPadding: false
           }) 
         }  
       })
@@ -247,7 +244,8 @@ export default new Vuex.Store({
         swal.fire ({
           icon: 'error',
           title: '마일리지 충전 실패',
-          text: '잘못된 요청입니다.'
+          text: '잘못된 요청입니다.',
+          scrollbarPadding: false
           })    
       })
     },
@@ -331,7 +329,6 @@ export default new Vuex.Store({
         headers: token,
       })
       .then(res => {
-        console.log(res.data)
         commit('GET_MOVIES', res.data)
       })
       .catch(err => console.log(err))

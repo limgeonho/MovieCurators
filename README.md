@@ -2,16 +2,13 @@
 
 ### - SSAFY 1학기 최우수 프로젝트
 
-![최우수프로젝트수상자2](README.assets/최우수프로젝트수상자2.jpg)
+![prize2](README.assets/prize2.jpg)
 
-(위 사진은 차후 삼성전자 고용노동부 직인이 찍힌 상장으로 변경 예정)
-
-- 배포1 : https://moviecurators-spring.netlify.app/ (Back : Spring Server + AWS EC2 + RDS + Google Cloud Storage)
+- 배포1 : https://moviecurators.com (Back : Spring Server + AWS EC2 + RDS + Google Cloud Storage)
 - 배포2 : https://moviecurators.netlify.app/ (Back : Django Server + Heroku)
 
-* 자세한 구현과 설명 기술적 정보 제공을 위해 별도의 산출물 외에도 PPT, DOCS가 제공되어있습니다.
-
-
+* 자세한 구현과 설명 기술적 정보 제공을 위해 별도의 산출물 외에도 PPT, DOCX가 제공되어있습니다.
+* [PPT와 Docx로 이동](pjt-final-sub)
 
 ## 0. 개요
 
@@ -164,7 +161,7 @@
 
 #### 전처리(00_Movie DB Maker)
 
-폴더 내의 00.movie_api.py와 01.ML_recommend.py를 실행.
+pjt-final-sub 폴더의 00.Movie DB Maker 내의 00.movie_api.py와 01.ML_recommend.py를 실행.
 
 최종 생성된 tmdb2.json을 back(pjt-final-drf)의 movies\fixtures폴더 내로 이동
 
